@@ -1,0 +1,23 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t bmonstermangmail/react-test -f ./client/Dockerfile.dev ./client
+
+script: 
+  - docker run bmonstermangmail/react-test npm test -- --coverage
+
+after_success: 
+  - docker build -t bmonstermangmail/fib-calc-client ./client
+  - docker build -t bmonstermangmail/fib-calc-nginx ./nginx
+  - docker build -t bmonstermangmail/fib-calc-server ./server
+  - docker build -t bmonstermangmail/fib-calc-worker ./worker
+
+# Login to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+# Take those images and push them to docker hub
+  - docker push bmonstermangmail/fib-calc-client
+  - docker push bmonstermangmail/fib-calc-nginx
+  - docker push bmonstermangmail/fib-calc-server
+  - docker push bmonstermangmail/fib-calc-worker
