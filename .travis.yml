@@ -22,14 +22,14 @@ after_success:
   - docker push bmonsterman/fib-calc-server
   - docker push bmonsterman/fib-calc-worker
 
-  deploy:
-    provider: elasticbeanstalk
-    region: "us-east-2"
-    app: "fib-calc"
-    env: "Fibcalc-env"
-    bucket_name: "elasticbeanstalk-us-east-2-400078757370"
-    bucket_path: "fib-calc"
-    on:
-      branch: master
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SECRET_KEY
+deploy:
+  provider: elasticbeanstalk
+  region: "us-east-2"
+  app: "fib-calc"
+  env: "Fibcalc-env"
+  bucket_name: "elasticbeanstalk-us-east-2-400078757370"
+  bucket_path: "fib-calc"
+  on:
+    branch: master
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
