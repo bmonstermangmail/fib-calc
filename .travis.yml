@@ -24,11 +24,11 @@ after_success:
 
   deploy:
     provider: elasticbeanstalk
-    region: 'us-east-2'
-    app: 'fib-calc'
-    env: 'Fibcalc-env'
-    bucket_name: 'elasticbeanstalk-us-east-2-400078757370'
-    bucket_path: 'fib-calc'
+    region: "us-east-2"
+    app: "fib-calc"
+    env: "Fibcalc-env"
+    bucket_name: "elasticbeanstalk-us-east-2-400078757370"
+    bucket_path: "fib-calc"
     on:
       branch: master
     access_key_id: $AWS_ACCESS_KEY
