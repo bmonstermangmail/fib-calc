@@ -41,7 +41,15 @@ pgClient.on("connect", (client) => {
   })
 
   app.get('/values/all', async (request,response) => {
-    const values = await pgClient.query('SELECT * FROM values');
+
+    try
+    {
+      const values = await pgClient.query('SELECT * FROM values');
+    }
+    catch(error){
+      console.error(error);
+      response.send(500);
+    }
 
     response.send(values.rows);
   });
@@ -52,7 +60,7 @@ pgClient.on("connect", (client) => {
     });
   });
 
-  app.post('/values', (request,response)=>{
+  app.post('/values', async (request,response)=>{
     const index = request.body.index;
     if(parseInt(index) > 40){
         return response.status(422).send('Index too high')
@@ -60,7 +68,12 @@ pgClient.on("connect", (client) => {
 
     redisClient.hset('values', index, 'Nothing Yet!');
     redisPublisher.publish('insert',index);
-    pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
+    result = await pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
+
+    result.catch((rejection) =>{
+      console.log(rejection);
+    });
+
 
     response.send({ working: true});
   });
