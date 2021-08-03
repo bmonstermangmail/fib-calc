@@ -49,6 +49,7 @@ pgClient.on("connect", (client) => {
     catch(error){
       console.error(error);
       response.send(500);
+      return;
     }
 
     response.send(values.rows);
