@@ -41,18 +41,18 @@ pgClient.on("connect", (client) => {
   })
 
   app.get('/values/all', async (request,response) => {
-
+    let values = null;
     try
     {
-      const values = await pgClient.query('SELECT * FROM values');
+      values = await pgClient.query('SELECT * FROM values');
     }
     catch(error){
 
       console.error(`${new Date()}\t${error}`);
-      response.send(500);
+      response.sendStatus(500);
       return;
     }
-
+    
     response.send(values?.rows);
   });
 
