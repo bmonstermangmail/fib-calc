@@ -47,12 +47,13 @@ pgClient.on("connect", (client) => {
       const values = await pgClient.query('SELECT * FROM values');
     }
     catch(error){
-      console.error(error);
+
+      console.error(`${new Date()}\t${error}`);
       response.send(500);
       return;
     }
 
-    response.send(values.rows);
+    response.send(values?.rows);
   });
 
   app.get('/values/current', async(request,response) =>{
@@ -69,11 +70,12 @@ pgClient.on("connect", (client) => {
 
     redisClient.hset('values', index, 'Nothing Yet!');
     redisPublisher.publish('insert',index);
-    try{
+
+    try {
       result = await pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
     }
-      catch(rejection){
-      console.error(rejection);
+    catch(error) {
+      console.error(`${new Date()}\t${error}`);
     }
 
     response.send({ working: true});
