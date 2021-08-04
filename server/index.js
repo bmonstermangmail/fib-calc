@@ -69,12 +69,12 @@ pgClient.on("connect", (client) => {
 
     redisClient.hset('values', index, 'Nothing Yet!');
     redisPublisher.publish('insert',index);
-    result = await pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
-
-    result.catch((rejection) =>{
-      console.log(rejection);
-    });
-
+    try{
+      result = await pgClient.query('INSERT INTO values(number) VALUES($1)', [index]);
+    }
+      catch(rejection){
+      console.error(rejection);
+    }
 
     response.send({ working: true});
   });
